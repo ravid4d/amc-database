@@ -1,0 +1,18 @@
+{
+  "name": "amclab/amc-database",
+  "description": "Database management via external webservices",
+  "authors": [
+      {
+          "name": "Federico Torrisi",
+          "email": "fedro.torrisi@gmail.com"
+      }
+  ],
+  "minimum-stability": "dev",
+  "require": {},
+  "extra": {},
+  "autoload": {
+      "psr-4": {
+          "AmcLab\\AmcDatabase\\": "src/"
+      }
+  }
+}
