@@ -9,7 +9,13 @@
   ],
   "minimum-stability": "dev",
   "require": {},
-  "extra": {},
+  "extra": {
+    "laravel": {
+        "providers": [
+            "AmcLab\\AmcDatabase\\Providers\\AmcDatabaseServiceProvider"
+        ]
+    }
+  },
   "autoload": {
       "psr-4": {
           "AmcLab\\AmcDatabase\\": "src/"
