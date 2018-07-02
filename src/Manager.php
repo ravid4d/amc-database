@@ -5,7 +5,7 @@ namespace AmcLab\AmcDatabase;
 use AmcLab\AmcDatabase\Exceptions\ManagerException;
 use AmcLab\Baseline\Contracts\PackageStore;
 use AmcLab\Baseline\Contracts\PersistenceManager;
-use AmcLab\Tenancy\Contracts\Resolver;
+use AmcLab\Environment\Contracts\Resolver;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\ConnectionResolverInterface;
 
@@ -29,7 +29,7 @@ class Manager implements PersistenceManager {
         return $this->store;
     }
 
-    public function setConnectionResolver(ConnectionResolverInterface $db) {
+    public function setDatabaseConnector(ConnectionResolverInterface $db) {
         $this->db = $db;
         return $this;
     }
@@ -47,12 +47,12 @@ class Manager implements PersistenceManager {
             throw $e;
         }
 
-        $this->resolver->bootstrap([\AmcLab\Tenancy\Hooks\DatabaseHook::class]);
+        $this->resolver->bootstrap([\AmcLab\Environment\Hooks\DatabaseHook::class]);
 
         $this->resolver->populate($response['disclosed'], [
             'database' => [
                 'connection' => 'server_manager',
-                'resolver' => $this->db,
+                'connector' => $this->db,
             ]
         ]);
 
@@ -73,15 +73,18 @@ class Manager implements PersistenceManager {
             throw new ManagerException('No server set', 1000);
         }
 
-        // FIXME: queste 4 righe andrebbero sistemate aggiungento un attributo "type" al Pathfinder
-        if ($pathway['resourceId'][1] === 'tenant') {
-            unset($pathway['resourceId'][1]);
-            $pathway['resourceId'] = array_values($pathway['resourceId']);
-        }
+        // // FIXME: queste 4 righe andrebbero sistemate aggiungento un attributo "type" al Pathfinder
+        // // NOTE: se sistemato, sistemare anche StoryTellerJob@handle!!
+        // if ($pathway['resourceId'][1] === 'tenant') {
+        //     unset($pathway['resourceId'][1]);
+        //     $pathway['resourceId'] = array_values($pathway['resourceId']);
+        // }
+
 
         $params = [
             $hostname = $this->resolver->use('database')->getConfig()['host'],
-            $database = strtoupper(join('_', $pathway['resourceId'])) . '_DB',
+            //$database = strtoupper(join('_', $pathway['resourceId'])) . '_DB',
+            $database = strtoupper($pathway['linkableResourceId']) . '_DB',
             $username = 'user_' . strtoupper(array_last($pathway['normalized'])) . '_' . strtolower(str_random(4)),
             $password = str_random(16),
         ];
