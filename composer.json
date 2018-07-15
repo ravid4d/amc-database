@@ -1,24 +1,26 @@
 {
   "name": "amclab/amc-database",
   "description": "Database management via external webservices",
-  "authors": [
-      {
-          "name": "Federico Torrisi",
-          "email": "federico@amcweb.it"
-      }
-  ],
+  "authors": [{
+    "name": "Federico Torrisi",
+    "email": "federico@amcweb.it"
+  }],
   "minimum-stability": "dev",
-  "require": {},
+  "require": {
+    "php": "^7.2",
+    "laravel/framework": "^5.6",
+    "amclab/baseline": "dev-master"
+  },
   "extra": {
     "laravel": {
-        "providers": [
-            "AmcLab\\AmcDatabase\\Providers\\AmcDatabaseServiceProvider"
-        ]
+      "providers": [
+        "AmcLab\\AmcDatabase\\Providers\\AmcDatabaseServiceProvider"
+      ]
     }
   },
   "autoload": {
-      "psr-4": {
-          "AmcLab\\AmcDatabase\\": "src/"
-      }
+    "psr-4": {
+      "AmcLab\\AmcDatabase\\": "src/"
+    }
   }
 }
