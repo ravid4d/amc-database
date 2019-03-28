@@ -8,6 +8,8 @@ use AmcLab\Baseline\Contracts\PersistenceManager;
 use AmcLab\Environment\Contracts\Resolver;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class Manager implements PersistenceManager {
 
@@ -85,8 +87,8 @@ class Manager implements PersistenceManager {
             $hostname = $this->resolver->use('database')->getConfig()['host'],
             //$database = strtoupper(join('_', $pathway['resourceId'])) . '_DB',
             $database = strtoupper($pathway['linkableResourceId']) . '_DB',
-            $username = 'user_' . strtoupper(array_last($pathway['normalized'])) . '_' . strtolower(str_random(4)),
-            $password = str_random(16),
+            $username = 'user_' . strtoupper(Arr::last($pathway['normalized'])) . '_' . strtolower(Str::random(4)),
+            $password = Str::random(16),
         ];
 
         $wrapper = $this->app->make('db.wrapper.' . class_basename(get_class($this->db->connection())) );
